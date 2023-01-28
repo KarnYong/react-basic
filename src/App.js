@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import { Grid } from '@mui/material'
+import MyBar from './MyBar'
+import MyCard from './MyCard'
 
 function App() {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    fetch('https://www.melivecode.com/api/attractions')
+      .then(res => res.json())
+      .then((result) => {
+        setData(result)
+      })
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MyBar name="Me App" />
+      <h1>Hello DIT, RSU</h1>
+      <Grid container spacing={2}>
+      {data.map(item => (
+        <Grid item xs={12} md={4}>
+          <MyCard 
+            key={item.id} 
+            name={item.name} 
+            coverimage={item.coverimage}
+            detail={item.detail}
+          />
+        </Grid>
+      ))}
+      </Grid>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
